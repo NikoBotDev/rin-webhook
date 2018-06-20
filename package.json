@@ -1,0 +1,19 @@
+{
+  "name": "rin-webhook",
+  "version": "0.0.1",
+  "description": "Um webhook que envia novos mapas que ficam ranked.",
+  "main": "webhook.js",
+  "scripts": {
+    "test": "nodemon webhook.js",
+    "start": "nodemon --exec \"node -r ./config\" webhook.js"
+  },
+  "author": "Lolligerjoj",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "github:discordjs/discord.js#master",
+    "dotenv-safe": "^6.0.0",
+    "fs-nextra": "^0.3.5",
+    "oppai": "^0.1.19",
+    "xml2js": "^0.4.19"
+  }
+}
