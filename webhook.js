@@ -3,10 +3,11 @@ const { WebhookClient } = require('discord.js');
 const track  = require('./functions/tracker');
 const hook = new WebhookClient(process.env.ID, process.env.TOKEN);
 const express = require('express');
-const https = require('https')
+const https = require('https');
+const { PROJECT_DOMAIN } = process.env;
 const app = express();
 const port = process.env.PORT || 5000;
-const domain = process.env.PROJECT_DOMAIN ? `https://${PROJECT_DOMAIN}.glitch.me/` : 'http://localhost:%s/';
+const domain = PROJECT_DOMAIN ? `https://${PROJECT_DOMAIN}.glitch.me/` : 'http://localhost:%s/';
 setInterval(async () => {
   const map = await track();
   if(!map)
