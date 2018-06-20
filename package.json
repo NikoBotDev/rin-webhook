@@ -13,7 +13,9 @@
     "discord.js": "github:discordjs/discord.js#master",
     "dotenv-safe": "^6.0.0",
     "fs-nextra": "^0.3.5",
+    "nodemon": "^1.17.5",
     "oppai": "^0.1.19",
+    "snekfetch": "^3.4.0",
     "xml2js": "^0.4.19"
   }
 }

@@ -8,6 +8,7 @@ module.exports = async () => {
   const m = await s.get('https://osu.ppy.sh/feed/ranked/');
   const xml = await parseXMLAsync(m.text);
   const map = xml.rss.channel[0].item[0];
+  console.log(map);
   const id = /(http:\/\/)?osu\.ppy\.sh\/s\/([0-9]+)/.exec(map.link[0])[2];
   const oldMap = await fs.readJSON('./data/lastmap.json');
   if(id === oldMap.id)
