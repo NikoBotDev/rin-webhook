@@ -2,7 +2,11 @@
 const { WebhookClient } = require('discord.js');
 const track  = require('./functions/tracker');
 const hook = new WebhookClient(process.env.ID, process.env.TOKEN);
-
+const express = require('express');
+const https = require('https')
+const app = express();
+const port = process.env.PORT || 5000;
+const domain = process.env.PROJECT_DOMAIN ? `https://${PROJECT_DOMAIN}.glitch.me/` : 'http://localhost:%s/';
 setInterval(async () => {
   const map = await track();
   if(!map)
@@ -33,3 +37,10 @@ setInterval(async () => {
   }); 
   return;
 }, 20000);
+
+setInterval(() => {
+  https.get(domain);
+}, 280000);
+app.listen(port, () => {
+  console.log(`App listening at ${domain}`, port);
+});

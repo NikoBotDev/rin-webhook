@@ -8,7 +8,6 @@ module.exports = async () => {
   const m = await s.get('https://osu.ppy.sh/feed/ranked/');
   const xml = await parseXMLAsync(m.text);
   const map = xml.rss.channel[0].item[0];
-  console.log(map);
   const id = /(http:\/\/)?osu\.ppy\.sh\/s\/([0-9]+)/.exec(map.link[0])[2];
   const oldMap = await fs.readJSON('./data/lastmap.json');
   if(id === oldMap.id)
@@ -24,13 +23,14 @@ module.exports = async () => {
     const path = `data/temp/${id}.osu`;
     await fs.writeFile(path, g.body);
     const oppai = await getOppai(path);
-    await fs.unlink(path);
+    await fs.unlink(path).catch(() => {
+      // ignored
+    });
     const time = getTime(bmp.total_length);
     oppai.length = `${time.minutes}:${time.seconds}`;
     oppai.bpm = parseInt(bmp.bpm);
     mapInfos.push(oppai);
   }
-  console.log(mapInfos);
   const base = {
     id,
     title: map.title[0],

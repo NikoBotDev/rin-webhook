@@ -12,6 +12,7 @@
   "dependencies": {
     "discord.js": "github:discordjs/discord.js#master",
     "dotenv-safe": "^6.0.0",
+    "express": "^4.16.3",
     "fs-nextra": "^0.3.5",
     "nodemon": "^1.17.5",
     "oppai": "^0.1.19",
