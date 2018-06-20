@@ -15,13 +15,16 @@ module.exports = async () => {
   map.id = id;
   await fs.writeJSON('./data/lastmap.json', map, { spaces: 5 });
   const mapObject = await getMap(id);
-  if(!mapObject)
+  if(!mapObject || (Array.isArray(mapObject)) && !mapObject.length)
     return;
   const mapInfos = [];
   for(const bmp of mapObject) {
     const g = await s.get(`https://osu.ppy.sh/osu/${bmp.beatmap_id}`);
     const path = `data/temp/${id}.osu`;
     await fs.writeFile(path, g.body);
+    const exists = await fs.pathExists(path);
+    if(!exists)
+      return;
     const oppai = await getOppai(path);
     await fs.unlink(path).catch(() => {
       // ignored
@@ -47,7 +50,7 @@ module.exports = async () => {
 };
 async function getMap(id) {
   try {
-    const m = await s.get(`https://osu.ppy.sh/api/get_beatmaps?k=${osuKey}&s=${id}`);
+    const m = await s.get(`https://osu.ppy.sh/api/get_beatmaps?k=${osuKey}&s=${id}&m=0`);
     if(m)
       return m.body;
     return null;
