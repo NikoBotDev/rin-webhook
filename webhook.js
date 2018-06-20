@@ -1,17 +1,15 @@
 
 const { WebhookClient } = require('discord.js');
+const logger = require('./functions/logger');
 const track  = require('./functions/tracker');
 const hook = new WebhookClient(process.env.ID, process.env.TOKEN);
-const express = require('express');
-const https = require('https');
-const { PROJECT_DOMAIN } = process.env;
-const app = express();
-const port = process.env.PORT || 5000;
-const domain = PROJECT_DOMAIN ? `https://${PROJECT_DOMAIN}.glitch.me/` : 'http://localhost:%s/';
+const mongo = require('./data/MongoDB');
+mongo.start();
 setInterval(async () => {
   const map = await track();
   if(!map)
     return;
+  logger.info(`Creating post for [${map.base.title}](${map.base.id})`);
   const embed = {
     color: 0x53f442,
     title: ':sparkling_heart: Ranked',
@@ -38,12 +36,3 @@ setInterval(async () => {
   }); 
   return;
 }, 20000);
-app.get('/', (req, res) => {
-  return res.status(200).send('Ok');
-});
-setInterval(() => {
-  https.get(domain);
-}, 280000);
-app.listen(port, () => {
-  console.log(`App listening at ${domain}`, port);
-});

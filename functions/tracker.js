@@ -4,16 +4,20 @@ const parseXMLAsync = promisify(require('xml2js').parseString);
 const fs = require('fs-nextra');
 const { osuKey } = process.env;
 const oppai = require('oppai');
+const mongo = require('../data/MongoDB');
 module.exports = async () => {
   const m = await s.get('https://osu.ppy.sh/feed/ranked/');
   const xml = await parseXMLAsync(m.text);
   const map = xml.rss.channel[0].item[0];
   const id = /(http:\/\/)?osu\.ppy\.sh\/s\/([0-9]+)/.exec(map.link[0])[2];
-  const oldMap = await fs.readJSON('./data/lastmap.json');
-  if(id === oldMap.id)
+  // const oldMap = await fs.readJSON('./data/lastmap.json');
+  const oldMap = await mongo.db.collection('oldMaps').findOne({ id });
+  console.log(oldMap);
+  if(oldMap)
     return null;
   map.id = id;
-  await fs.writeJSON('./data/lastmap.json', map, { spaces: 5 });
+  // await fs.writeJSON('./data/lastmap.json', map, { spaces: 5 });
+  await mongo.db.collection('oldMaps').insert(map);
   const mapObject = await getMap(id);
   if(!mapObject || (Array.isArray(mapObject)) && !mapObject.length)
     return;
