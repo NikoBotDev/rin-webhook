@@ -5,6 +5,7 @@ const fs = require('fs-nextra');
 const { osuKey } = process.env;
 const oppai = require('oppai');
 const mongo = require('../data/MongoDB');
+const logger = require('./logger');
 module.exports = async () => {
   const m = await s.get('https://osu.ppy.sh/feed/ranked/');
   const xml = await parseXMLAsync(m.text);
@@ -12,7 +13,6 @@ module.exports = async () => {
   const id = /(http:\/\/)?osu\.ppy\.sh\/s\/([0-9]+)/.exec(map.link[0])[2];
   // const oldMap = await fs.readJSON('./data/lastmap.json');
   const oldMap = await mongo.db.collection('oldMaps').findOne({ id });
-  console.log(oldMap);
   if(oldMap)
     return null;
   map.id = id;
@@ -59,7 +59,7 @@ async function getMap(id) {
       return m.body;
     return null;
   } catch(e) {
-    console.error(e);
+    logger.error(e);
     return null;
   }
 }
