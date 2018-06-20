@@ -37,7 +37,9 @@ setInterval(async () => {
   }); 
   return;
 }, 20000);
-
+app.get('/', (req, res) => {
+  return res.status(200).send('Ok');
+});
 setInterval(() => {
   https.get(domain);
 }, 280000);
