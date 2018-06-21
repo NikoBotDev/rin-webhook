@@ -5,7 +5,8 @@
   "main": "webhook.js",
   "scripts": {
     "test": "nodemon webhook.js",
-    "start": "pm2 start ecosystem.json --attach"
+    "start": "pm2 start ecosystem.json --attach",
+    "stop": "pm2 stop all && pm2 delete all"
   },
   "author": "Lolligerjoj",
   "license": "MIT",

@@ -7,8 +7,10 @@ const mongo = require('./data/MongoDB');
 mongo.start();
 setInterval(async () => {
   const map = await track();
+  console.log('a');
   if(!map)
     return;
+  console.log(map.base.image)
   logger.info(`Creating post for [${map.base.title}](${map.base.id})`);
   const embed = {
     color: 0x53f442,

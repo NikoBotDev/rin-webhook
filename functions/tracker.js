@@ -13,13 +13,13 @@ module.exports = async () => {
   const id = /(http:\/\/)?osu\.ppy\.sh\/s\/([0-9]+)/.exec(map.link[0])[2];
   // const oldMap = await fs.readJSON('./data/lastmap.json');
   const oldMap = await mongo.db.collection('oldMaps').findOne({ id });
-  if(oldMap)
+  if(oldMap) 
     return null;
   map.id = id;
   // await fs.writeJSON('./data/lastmap.json', map, { spaces: 5 });
   await mongo.db.collection('oldMaps').insert(map);
   const mapObject = await getMap(id);
-  if(!mapObject || (Array.isArray(mapObject)) && !mapObject.length)
+  if(!mapObject || (Array.isArray(mapObject)) && !mapObject.length) 
     return;
   const mapInfos = [];
   for(const bmp of mapObject) {
@@ -46,6 +46,7 @@ module.exports = async () => {
     pubDate: map.pubDate[0],
     image: `https://b.ppy.sh/thumb/${id}l.jpg`
   };
+
   return {
     base,
     maps: mapInfos
